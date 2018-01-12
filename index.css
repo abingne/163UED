@@ -294,10 +294,10 @@ body
 	width: 19.8%;
 	overflow: hidden;
 }
-/*.setting li+li
+.setting li+li
 {
 	margin-left: 0.25%;
-}*/
+}
 .setting li img{
 	width: 100%;
 }
