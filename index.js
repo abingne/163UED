@@ -2,15 +2,12 @@
 function Notice(){
   var scroll = document.getElementsByClassName("scroll")[0];
   var clickscroll = document.getElementsByClassName("shut")[0];
-  // var scrollclick = getCookie('scroll');
-  // console.log(scrollclick);
   if (getCookie('scroll')) {
     scroll.style.display = "none";
   }else{
     clickscroll.onclick = function(){
       setCookie('scroll','true',10);
       scroll.style.display = "none";
-      console.log(document.cookie.split('; '));
     }
   }
 }
@@ -20,19 +17,54 @@ Notice();
 function attention(){
   var logo=document.getElementById("logo");
   var notfollowed=logo.getElementsByTagName("p")[0];
+  var followed = document.getElementsByClassName("followed")[0];
   var mask=document.getElementById("mask");
+  var logoBtn = document.getElementById("logoBtn");
+  var username = document.getElementById("username");
+  var password = document.getElementById("password");
 
-  var loginSuc = getCookie(loginSuc);
-  // console.log(loginSuc);
-  if (loginSuc) {
-    // ajax('get',''
+  // 判断cookie中是否存在followSuc，如果存在则显示已关注；
+  // 其实这种方式不科学，因为cookie是会过期的，但是接口中并没有返回用户关注成功后的数据
+  if (getCookie('followSuc')) {
+    notfollowed.style.display = "none";
+    followed.style.display = "block";
+  }else{
+    notfollowed.onclick = function(){
+      if (getCookie('loginSuc')) {
+        ajax('get','http://study.163.com/webDev/attention.htm','',function(data){
+          console.log("关注API："+data);
+          if (data==1) {
+            setCookie('followSuc',true,10);
+            notfollowed.style.display = "none";
+            followed.style.display = "block";
+          };
+        });
+      }else{
+        mask.style.display = "block";
+        logoBtn.onclick=function(){
+          // 这里使用MD5对用户数据进行加密
+          ajax('get','http://study.163.com/webDev/login.htm','userName='+hex_md5(username.value)+'&password='+hex_md5(password.value),function(data){
+            console.log(data);
+            if(data==1){
+              setCookie('loginSuc',true,10);
+              ajax('get','http://study.163.com/webDev/attention.htm','',function(data){
+                console.log("关注API："+data);
+                if (data==1) {
+                  setCookie('followSuc',true,10);
+                  notfollowed.style.display = "none";
+                  followed.style.display = "block";
+                  location.reload();
+                };
+              });
+            };
+          });
+        };
+      };
+    };
   }
-    
 
-  notfollowed.onclick=function (){
-    mask.style.display="block";
-  }
-}
+  
+};
 attention();
 
 /* 这个函数用来设置cookie */
