@@ -504,13 +504,14 @@ body
 	border: 1px solid #ecebeb;
 	border-top-color: #fff; 
 }
-.ins div
+.ins .videoIcan
 {
 	box-sizing: border-box;
 	height: 174px;
 	padding: 20px;
 	border:1px solid #ecebeb;
 	box-shadow: 0px 1px 0px #f1f1f1;
+	cursor: pointer;
 }
 .ins div p
 {
@@ -637,8 +638,8 @@ body
 }
 /* /底部模块 */
 
-/* 登录框弹出模块 */
-.mask
+/* 登录/视频弹出模块 */
+.mask,.videoMask
 {
 	display: none;
 	position: fixed;
@@ -648,6 +649,41 @@ body
 	right: 0;
 	background: rgba(50,50,50,0.9);
 }
+/* 视频弹出层 */
+.videoMask{
+	/*display: block;*/
+	width: 100%;
+	height: 100%;
+}
+.videoMask div{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	box-sizing: border-box;
+	width: 950px;
+	/*height: 680px;*/
+	padding: 0 31px;
+	background: #fff;
+}
+.videoMask div h3{
+	font: bold 18px/28px "微软雅黑",Sans-serif;
+	margin: 19px 0 22px;
+}
+video{
+	width: 890px;
+	margin-bottom: 30px;
+	/*height: 568px;*/
+}
+.videoMask div span{
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	color: #5a5a5a;
+	font-size: 15px;
+	cursor: pointer;
+}
+/* 登录弹出层 */
 .play
 {
 	display: block;
@@ -706,3 +742,5 @@ body
 	font-weight: bold;
 }
 /* /登录框弹出模块 */
+
+

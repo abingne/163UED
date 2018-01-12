@@ -291,6 +291,23 @@ function addEvent(){
 addEvent();
 */
 
+/* 视频弹出 */
+function video(){
+  var videoIcan = document.getElementsByClassName("videoIcan")[0];
+  var videoMask = document.getElementsByClassName("videoMask")[0];
+  var downVideo = document.querySelector("#downVideo");
+console.log(1);
+  videoIcan.onclick = function(){
+    
+    videoMask.style.display = "block";
+  };
+  downVideo.onclick = function(){
+    videoMask.style.display = "none";
+  }
+
+}
+video();
+
 /* 获取最热排行 */
 function getHotlist(){
   var hotList = document.getElementById("hotList");
