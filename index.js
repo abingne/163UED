@@ -1,3 +1,57 @@
+/* 关闭顶部通知条 */
+function Notice(){
+  var scroll = document.getElementsByClassName("scroll")[0];
+  var clickscroll = document.getElementsByClassName("shut")[0];
+  // var scrollclick = getCookie('scroll');
+  // console.log(scrollclick);
+  if (getCookie('scroll')) {
+    scroll.style.display = "none";
+  }else{
+    clickscroll.onclick = function(){
+      setCookie('scroll','true',10);
+      scroll.style.display = "none";
+      console.log(document.cookie.split('; '));
+    }
+  }
+}
+Notice();
+
+/* 导航关注功能 */
+function attention(){
+  var logo=document.getElementById("logo");
+  var notfollowed=logo.getElementsByTagName("p")[0];
+  var mask=document.getElementById("mask");
+
+  var loginSuc = getCookie(loginSuc);
+  // console.log(loginSuc);
+  if (loginSuc) {
+    // ajax('get',''
+  }
+    
+
+  notfollowed.onclick=function (){
+    mask.style.display="block";
+  }
+}
+attention();
+
+/* 这个函数用来设置cookie */
+function setCookie(key,value,t) {
+  var oDate = new Date();
+  oDate.setDate( oDate.getDate() + t );
+  document.cookie = key + '=' + value + ';expires=' + oDate.toGMTString();
+}
+/* 这个函数用来获取cookie */
+function getCookie(key) {
+  var arr1 = document.cookie.split('; ');
+  for (var i=0; i<arr1.length; i++) {
+    var arr2 = arr1[i].split('=');
+    if ( arr2[0] == key ) {
+      return arr2[1];
+    }
+  }
+}
+
 /* 计算轮播区域的高度 */
 function calHeight(){
 	var carList=document.getElementById("carList");
@@ -238,13 +292,7 @@ function getHotlist(){
 setInterval(getHotlist(),5000);
 
 //点击关注弹出登录框
-	var logo=document.getElementById("logo");
-	var notfollowed=logo.getElementsByTagName("p")[0];
-	var mask=document.getElementById("mask");
-
-	notfollowed.onclick=function (){
-		mask.style.display="block";
-	}
+	
 
 //登录框中的关闭按钮，点击后登录框的display变为none
 	var close=mask.getElementsByTagName("p")[0];
