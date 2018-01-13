@@ -22,9 +22,10 @@ function attention(){
   var logoBtn = document.getElementById("logoBtn");
   var username = document.getElementById("username");
   var password = document.getElementById("password");
-
-  // 判断cookie中是否存在followSuc，如果存在则显示已关注；
-  // 其实这种方式不科学，因为cookie是会过期的，但是接口中并没有返回用户关注成功后的数据
+  var close=mask.getElementsByTagName("p")[0];
+  
+  /* 判断cookie中是否存在followSuc，如果存在则显示已关注；
+  其实这种方式不科学，因为cookie是会过期的，但是接口中并没有返回用户关注成功后的数据 */
   if (getCookie('followSuc')) {
     notfollowed.style.display = "none";
     followed.style.display = "block";
@@ -62,8 +63,10 @@ function attention(){
       };
     };
   }
-
-  
+  /* 关闭登录层 */
+  close.onclick=function (){
+    mask.style.display="none";
+  }
 };
 attention();
 
@@ -163,14 +166,17 @@ carousel();
 /* 获取课程列表 */
 function getcourseList(iPage,type){
   var courseList = document.getElementById("courseList");
+  var oList = courseList.getElementsByTagName("li");
 
   ajax('get','http://study.163.com/webDev/couresByCategory.htm','pageNo='+iPage+'&psize=20&type='+type,function(data){
     var d = JSON.parse(data);
     if (d.list) {
-    for (var i = 0; i < d.list.length; i++) {
-
+      console.log(d);
+      for (var i = 0; i < d.list.length; i++) {
         var oLi = document.createElement("li");
-
+        // 这是正常显示的
+        var oItem = document.createElement("div");
+        oItem.className = "item";
         var oImg = document.createElement("img");
         oImg.src = d.list[i].middlePhotoUrl;
 
@@ -192,22 +198,85 @@ function getcourseList(iPage,type){
         if (d.list[i].price == 0) {
           oP3.innerHTML = "免费";
         }
-
         oDiv.appendChild(oH3);
         oDiv.appendChild(oP1);
         oDiv.appendChild(oP2);
         oDiv.appendChild(oP3);
 
-        oLi.appendChild(oImg);
-        oLi.appendChild(oDiv);
+        oItem.appendChild(oImg);
+        oItem.appendChild(oDiv);
+        oLi.appendChild(oItem);
+        // 这是mouseover时显示的
+        var oDetailItem = document.createElement("div");
+        oDetailItem.className = "detailItem";
+        var oItemImg = document.createElement("img");
+        oItemImg.src = d.list[i].middlePhotoUrl;
+        var oSpan = document.createElement("span");
+        var oItemTitle = document.createElement("h3");
+        oItemTitle.innerHTML = d.list[i].name;
+        var oTotal = document.createElement("p");
+        oTotal.className = "total";
+        var oTotalIcan = document.createElement("i");
+        oTotalIcan.className = "totalIcan";
+        var oTotalNumber = document.createElement("i");
+        oTotalNumber.className = "totalNumber";
+        oTotalNumber.innerHTML = d.list[i].learnerCount + "人在学";
+        var oIssue = document.createElement("p");
+        oIssue.className = "issue";
+        oIssue.innerHTML = "发布者：" + d.list[i].provider;
+        var oSort = document.createElement("p");
+        oSort.className = "sort";
+        oSort.innerHTML = "分类：" + d.list[i].categoryName;
+        var oPresent = document.createElement("div");
+        oPresent.className = "present";
+        var oPtxt = document.createElement("p");
+        oPtxt.innerHTML = d.list[i].description;
 
+        oTotal.appendChild(oTotalIcan);
+        oTotal.appendChild(oTotalNumber);
+
+        oSpan.appendChild(oItemTitle);
+        oSpan.appendChild(oTotal);
+        oSpan.appendChild(oIssue);
+        oSpan.appendChild(oSort);
+        oPresent.appendChild(oPtxt);
+        
+        oDetailItem.appendChild(oItemImg);
+        oDetailItem.appendChild(oSpan);
+        oDetailItem.appendChild(oPresent);
+
+        oLi.appendChild(oDetailItem);
         courseList.appendChild(oLi);
+      }
     }
-  }
   })
   getPag(1,10);
+  setTimeout(seeDetails,1000);
+  // for (var i = 0; i < oList.length; i++) {
+  //   oList[i].onmouseover = function(){
+  //     console.log(this);
+  //   }
+  // }
 }
-// getcourseList(1,10);
+getcourseList(1,10);
+
+/* 查看课程详情 */
+function seeDetails(){
+  var courseList = document.getElementById("courseList");
+  var oList = courseList.getElementsByTagName("li");
+  for (var i = 0; i < oList.length; i++) {
+    var that = i;
+    var detailItem = oList[i].getElementsByClassName("detailItem")[0]
+    oList[i].onmouseover = function(){
+      var detailItem = this.getElementsByClassName("detailItem")[0]
+      detailItem.style.display = "block";
+    };
+    oList[i].onmouseout = function(){
+      var detailItem = this.getElementsByClassName("detailItem")[0]
+      detailItem.style.display = "none";
+    }
+  }
+}
 
 /* tab切换 */
 function tabSwitch(){
@@ -298,7 +367,7 @@ function video(){
   var downVideo = document.querySelector("#downVideo");
 console.log(1);
   videoIcan.onclick = function(){
-    
+
     videoMask.style.display = "block";
   };
   downVideo.onclick = function(){
@@ -344,10 +413,7 @@ setInterval(getHotlist(),5000);
 	
 
 //登录框中的关闭按钮，点击后登录框的display变为none
-	var close=mask.getElementsByTagName("p")[0];
-	close.onclick=function (){
-		mask.style.display="none";
-	}
+	
 
 /* 登录 
 function login(){
