@@ -358,8 +358,8 @@ body
 /* 课程列表模块 */
 .courseList
 {
-	width: 980px;
-	height: 1222px;
+	width: 985px;
+    height: 1225px;
 	margin: 28px 0 -20px -20px;
 	overflow: hidden;
 }
