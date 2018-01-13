@@ -33,7 +33,6 @@ function attention(){
     notfollowed.onclick = function(){
       if (getCookie('loginSuc')) {
         ajax('get','http://study.163.com/webDev/attention.htm','',function(data){
-          console.log("关注API："+data);
           if (data==1) {
             setCookie('followSuc',true,10);
             notfollowed.style.display = "none";
@@ -45,11 +44,9 @@ function attention(){
         logoBtn.onclick=function(){
           // 这里使用MD5对用户数据进行加密
           ajax('get','http://study.163.com/webDev/login.htm','userName='+hex_md5(username.value)+'&password='+hex_md5(password.value),function(data){
-            console.log(data);
             if(data==1){
               setCookie('loginSuc',true,10);
               ajax('get','http://study.163.com/webDev/attention.htm','',function(data){
-                console.log("关注API："+data);
                 if (data==1) {
                   setCookie('followSuc',true,10);
                   notfollowed.style.display = "none";
@@ -171,7 +168,6 @@ function getcourseList(iPage,type){
   ajax('get','http://study.163.com/webDev/couresByCategory.htm','pageNo='+iPage+'&psize=20&type='+type,function(data){
     var d = JSON.parse(data);
     if (d.list) {
-      console.log(d);
       for (var i = 0; i < d.list.length; i++) {
         var oLi = document.createElement("li");
         // 这是正常显示的
@@ -251,12 +247,7 @@ function getcourseList(iPage,type){
     }
   })
   getPag(1,10);
-  setTimeout(seeDetails,1000);
-  // for (var i = 0; i < oList.length; i++) {
-  //   oList[i].onmouseover = function(){
-  //     console.log(this);
-  //   }
-  // }
+  setTimeout(seeDetails,500);
 }
 getcourseList(1,10);
 
@@ -265,8 +256,6 @@ function seeDetails(){
   var courseList = document.getElementById("courseList");
   var oList = courseList.getElementsByTagName("li");
   for (var i = 0; i < oList.length; i++) {
-    var that = i;
-    var detailItem = oList[i].getElementsByClassName("detailItem")[0]
     oList[i].onmouseover = function(){
       var detailItem = this.getElementsByClassName("detailItem")[0]
       detailItem.style.display = "block";
@@ -286,7 +275,6 @@ function tabSwitch(){
   var iPage = 1;
 
   oEdit.onclick = function (){
-    var iPage = 1;
     oDesign.className = "";
     oEdit.className = "pitch";
     removeAllChild();
@@ -294,7 +282,6 @@ function tabSwitch(){
     getPag(iPage,20)
   }
   oDesign.onclick = function (){
-    var iPage = 1;
     oDesign.className = "pitch";
     oEdit.className = "";
     removeAllChild();
@@ -309,14 +296,14 @@ function removeAllChild(){
   var courseList = document.getElementById("courseList");
   var paging = document.getElementById("paging");
   while(paging.hasChildNodes()) //当div下还存在子节点时 循环继续  
-    {  
-        paging.removeChild(paging.firstChild);  
-    };
+  {  
+    paging.removeChild(paging.firstChild);  
+  };
   while(courseList.hasChildNodes()) //当div下还存在子节点时 循环继续  
-    {  
-        courseList.removeChild(courseList.firstChild);  
-    };
-}
+  {  
+    courseList.removeChild(courseList.firstChild);  
+  };
+};
 
 /* 设置翻页器样式 */
 function getPag(iPage,type){
@@ -327,7 +314,6 @@ function getPag(iPage,type){
     
     var oLeft = document.getElementById("left");
     var oPaging = document.getElementById("paging");
-    //oPaging.className = "paging";
     var oUp = document.createElement("a");  //后退一页
     oUp.className = "up";
     oPaging.appendChild(oUp);
@@ -349,31 +335,17 @@ function getPag(iPage,type){
   })
 }
 
-
- /* 为翻页器添加点击事件 
-function addEvent(){
-  var paging = document.querySelector(".paging"); //找到翻页器模块
-  var previous = document.querySelector(".up"); //找到上一页按钮
-  var next = document.querySelector(".down"); //找到下一页按钮
-  
-}
-addEvent();
-*/
-
 /* 视频弹出 */
 function video(){
   var videoIcan = document.getElementsByClassName("videoIcan")[0];
   var videoMask = document.getElementsByClassName("videoMask")[0];
   var downVideo = document.querySelector("#downVideo");
-console.log(1);
   videoIcan.onclick = function(){
-
     videoMask.style.display = "block";
   };
   downVideo.onclick = function(){
     videoMask.style.display = "none";
   }
-
 }
 video();
 
@@ -383,7 +355,6 @@ function getHotlist(){
 
   ajax('get','http://study.163.com/webDev/hotcouresByCategory.htm','',function(data){
     var d = JSON.parse(data);
-
     for (var i = 0; i < d.length; i++) {
 
         var oLi = document.createElement("li");
@@ -405,27 +376,7 @@ function getHotlist(){
         hotList.appendChild(oLi);
     }
   })
-}
-//getHotlist();
-setInterval(getHotlist(),5000);
+};
+getHotlist();
+setInterval(getHotlist,5000);
 
-//点击关注弹出登录框
-	
-
-//登录框中的关闭按钮，点击后登录框的display变为none
-	
-
-/* 登录 
-function login(){
-  var username = document.getElementById("username");
-  var password = document.getElementById("password");
-  var oBtn = document.getElementById("btn");
-
-  oBtn.onclick = function (){
-    ajax('get','http://study.163.com/webDev/login.htm','userName='+username.value+'&password='+password.value,function(data){
-      alert(data);
-    })
-  }
-}
-login();
-*/
