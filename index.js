@@ -207,7 +207,7 @@ function getcourseList(iPage,type){
   })
   getPag(1,10);
 }
-getcourseList(1,10);
+// getcourseList(1,10);
 
 /* tab切换 */
 function tabSwitch(){
