@@ -248,12 +248,7 @@ function getcourseList(iPage,type){
       }
     }
   });
-  if (oDesign.className == "pitch") {
-    getPag(1,10);
-  }else{
-    getPag(iPage,20);
-  }
-  
+  setTimeout(clickPag,1000);
   setTimeout(seeDetails,500);
 }
 getcourseList(1,10);
@@ -279,19 +274,21 @@ function tabSwitch(){
   var oTab = document.getElementById("tab");
   var oDesign = document.getElementById("design");
   var oEdit = document.getElementById("edit");
-  var iPage = 1;
 
   oEdit.onclick = function (){
     oDesign.className = "";
     oEdit.className = "pitch";
+    getPag(1,20);
     removeAllChild();
-    getcourseList(iPage,20);
+    getcourseList(1,20);
+    setTimeout(clickPag,1000);
   }
   oDesign.onclick = function (){
     oDesign.className = "pitch";
     oEdit.className = "";
     removeAllChild();
-    getcourseList(iPage,10);
+    getcourseList(1,10);
+    setTimeout(clickPag,1000);
   }
 }
 tabSwitch();
@@ -319,7 +316,7 @@ function getPag(iPage,type){
     
     var oLeft = document.getElementById("left");
     var oPaging = document.getElementById("paging");
-    var oUp = document.createElement("a");  //后退一页
+    var oUp = document.createElement("i");  //后退一页
     oUp.className = "up";
     oPaging.appendChild(oUp);
 
@@ -332,13 +329,59 @@ function getPag(iPage,type){
       oPaging.appendChild(oIs);
     }
 
-    var oDown = document.createElement("a");  //前翻一页
+    var oDown = document.createElement("i");  //前翻一页
     oDown.className = "down";
     oPaging.appendChild(oDown);
 
     oLeft.appendChild(oPaging); 
   })
-}
+};
+getPag(1,10);
+
+/* 翻页器点击 */
+function clickPag(){
+  var oPaging = document.getElementById("paging"); 
+  var oPagItem = oPaging.getElementsByTagName("i");
+  var oDesign = document.getElementById("design");
+  var iPage = 1;
+  var type = 10;
+  var oPlength = oPagItem.length;
+  console.log(oPlength);
+
+  for (var i = 0; i < oPagItem.length; i++) {
+    oPagItem[i].onclick = function(){
+      var that = this;
+      removeAllChild();
+      if (oDesign.className == "pitch") {
+        type = 10;
+        change();
+      }else{
+        type = 20;
+        change();
+      }
+      function change(){
+        if (that.className == "up") {
+          if (iPage >= 1) {
+            iPage = iPage-1;
+            getcourseList(iPage,type);
+            getPag(iPage,type);
+          };
+        }else if(that.className == "down"){
+          if (iPage <= (oPlength-2) ) {
+            iPage = iPage+1;
+            console.log(iPage,oPlength-2);
+            getcourseList(iPage,type);
+            getPag(iPage,type);
+          };
+        }else{
+          iPage = that.innerHTML;
+          getcourseList(iPage,type);
+          getPag(iPage,type);
+        }
+      }
+    }
+  }
+};
 
 /* 视频弹出 */
 function video(){
