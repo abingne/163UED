@@ -164,6 +164,8 @@ carousel();
 function getcourseList(iPage,type){
   var courseList = document.getElementById("courseList");
   var oList = courseList.getElementsByTagName("li");
+  var oDesign = document.getElementById("design");
+  var oEdit = document.getElementById("edit");
 
   ajax('get','http://study.163.com/webDev/couresByCategory.htm','pageNo='+iPage+'&psize=20&type='+type,function(data){
     var d = JSON.parse(data);
@@ -245,8 +247,13 @@ function getcourseList(iPage,type){
         courseList.appendChild(oLi);
       }
     }
-  })
-  getPag(1,10);
+  });
+  if (oDesign.className == "pitch") {
+    getPag(1,10);
+  }else{
+    getPag(iPage,20);
+  }
+  
   setTimeout(seeDetails,500);
 }
 getcourseList(1,10);
@@ -279,14 +286,12 @@ function tabSwitch(){
     oEdit.className = "pitch";
     removeAllChild();
     getcourseList(iPage,20);
-    getPag(iPage,20)
   }
   oDesign.onclick = function (){
     oDesign.className = "pitch";
     oEdit.className = "";
     removeAllChild();
     getcourseList(iPage,10);
-    getPag(iPage,20);
   }
 }
 tabSwitch();
