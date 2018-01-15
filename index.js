@@ -286,6 +286,7 @@ function tabSwitch(){
   oDesign.onclick = function (){
     oDesign.className = "pitch";
     oEdit.className = "";
+    getPag(1,20);
     removeAllChild();
     getcourseList(1,10);
     setTimeout(clickPag,1000);
@@ -346,7 +347,6 @@ function clickPag(){
   var iPage = 1;
   var type = 10;
   var oPlength = oPagItem.length;
-  console.log(oPlength);
 
   for (var i = 0; i < oPagItem.length; i++) {
     oPagItem[i].onclick = function(){
